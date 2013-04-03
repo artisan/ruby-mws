@@ -48,7 +48,7 @@ module MWS
         params[:uri]               ||= '/'
 
         params[:lists] ||= {}
-        params[:lists][:marketplace_id] = "MarketplaceId.Id"
+        #params[:lists][:marketplace_id] = "MarketplaceId.Id"
 
         query = Query.new params
         if $VERBOSE

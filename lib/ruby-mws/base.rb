@@ -20,6 +20,10 @@ module MWS
       @reports ||= MWS::API::Reports.new(@connection)
     end
 
+    def product
+      @product ||= MWS::API::Product.new(@connection)
+    end
+
     # serves as a server ping
     def self.server_time
       MWS::Connection.server_time
