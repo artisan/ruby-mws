@@ -16,9 +16,12 @@ module MWS
       end
 
       private
-      def get_report(type)
+      def get_report(type, marketplace=nil)
         puts "ruby-mws: Requesting #{type} report from Amazon" if $VERBOSE
-        response = send_request(:request_report, :report_type => type)
+        response = send_request(:request_report,
+                                :report_type => type,
+                                :marketplace_ids => [marketplace],
+                                :lists => { :marketplace_ids => 'MarketplaceIdList.Id' })
 
         # Amazon returns ReportRequestId, which we can use to retrieve the results
         request_id = response.report_request_info.report_request_id
