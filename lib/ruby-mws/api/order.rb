@@ -2,6 +2,12 @@ module MWS
   module API
 
     class Order < Base
+
+      def_request :report,
+        verb:     :get,
+        uri:      '/OrderReport',
+        version:  '2011-01-01'
+
       def_request [:list_orders, :list_orders_by_next_token],
         :verb => :get,
         :uri => '/Orders/2011-01-01',
