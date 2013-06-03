@@ -20,7 +20,9 @@ module MWS
         :uri => '/Orders/2011-01-01',
         :version => '2011-01-01',
         :mods => [
-          lambda {|r| r.order_items = [r.order_items.order_item].flatten}
+          # lambda {|r| r.order_items = [r.order_items.order_item].flatten}
+          lambda {|i| i.order_items = i.order_items.order_item if i.order_items && i.order_items.size > 1},
+          lambda {|i| i.order_items = [i.order_items.order_item] if i.order_items && i.order_items.size == 1}
         ]
 
       def_request :get_order,
