@@ -44,11 +44,11 @@ module MWS
         params[:signature_method]  ||= 'HmacSHA256'
         params[:signature_version] ||= '2'
         params[:timestamp]         ||= Time.now.iso8601
-        params[:version]           ||= '2009-01-01'
+        # params[:version]           ||= '2009-01-01'
         params[:uri]               ||= '/'
 
-        # params[:lists] ||= {}
-        params[:lists][:marketplace_id] = "MarketplaceId.Id" if params[:lists]
+        params[:lists] ||= {}
+        params[:lists][:marketplace_id] = "MarketplaceId.Id"
 
         query = Query.new params
         if $VERBOSE
@@ -57,6 +57,9 @@ module MWS
         resp  = self.class.send(params[:verb], query.request_uri, query.http_options)
         if $VERBOSE
           puts "ruby-mws: response: #{resp}"
+          puts "response body:"
+          puts resp.body.inspect
+          puts "\n"
         end
 
         content_type = resp.headers['content-type']
