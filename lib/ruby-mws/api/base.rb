@@ -11,7 +11,7 @@ module MWS
       include HTTParty
       # debug_output $stderr  # only in development
       format :xml
-      headers "User-Agent"   => "ruby-mws/#{MWS::VERSION} (Language=Ruby/1.9.3-p0)"
+      headers "User-Agent"   => "ruby-mws/#{MWS::VERSION} (Language=Ruby/#{RUBY_VERSION})"
       headers "Content-Type" => "text/xml"
 
       attr_accessor :response
@@ -44,17 +44,23 @@ module MWS
         params[:signature_method]  ||= 'HmacSHA256'
         params[:signature_version] ||= '2'
         params[:timestamp]         ||= Time.now.iso8601
-        params[:version]           ||= '2009-01-01'
+        # params[:version]           ||= '2009-01-01'
         params[:uri]               ||= '/'
 
         params[:lists] ||= {}
-        #params[:lists][:marketplace_id] = "MarketplaceId.Id"
+        params[:lists][:marketplace_id] = "MarketplaceId.Id"
 
         query = Query.new params
         if $VERBOSE
           puts "ruby-mws: Sending #{params[:verb].upcase} request to #{query.request_uri}. Options: #{query.http_options.inspect}"
         end
         resp  = self.class.send(params[:verb], query.request_uri, query.http_options)
+        if $VERBOSE
+          puts "ruby-mws: response: #{resp}"
+          puts "response body:"
+          puts resp.body.inspect
+          puts "\n"
+        end
 
         content_type = resp.headers['content-type']
         if not content_type =~ /text\/xml/ || content_type =~ /application\/xml/ || content_type =~ /application\/octet-stream/
